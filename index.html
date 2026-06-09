@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXE | Premium Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+
+  <div id="loader-wrapper">
+    <div class="loader-spinner"></div>
+    <div class="text-3xl font-black tracking-tighter text-slate-900 mt-4 animate-pulse">LUXE<span class="text-orange-600">.</span></div>
+  </div>
+
+  <div class="notif-trigger group" onclick="toggleNotif()">
+      <div class="w-14 h-14 md:w-16 md:h-16 bg-slate-900 text-white rounded-full flex items-center justify-center shadow-2xl group-hover:bg-orange-600 transition-all">
+          <i class="fa-solid fa-bell text-xl"></i>
+          <span id="notif-dot" class="absolute top-3 right-3 w-4 h-4 bg-orange-500 border-2 border-slate-900 rounded-full hidden"></span>
+      </div>
+  </div>
+
+  <div id="notif-sidebar" class="p-8">
+      <div class="flex justify-between items-center mb-10 border-b border-slate-100 pb-6">
+          <h3 class="font-black text-2xl uppercase tracking-tighter text-slate-900"><i class="fa-solid fa-bolt text-orange-500 mr-2"></i> Notifications</h3>
+          <button onclick="toggleNotif()" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-all"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="notif-feed" class="space-y-4">
+          <p class="text-slate-400 text-sm font-medium italic text-center py-10 border border-dashed border-slate-200 rounded-2xl">No recent notifications...</p>
+      </div>
+  </div>
+
+  <nav class="fixed top-0 inset-x-0 z-50 glass px-6 md:px-12 py-4 flex justify-between items-center shadow-sm">
+    <div class="font-black text-2xl md:text-3xl tracking-tighter cursor-pointer text-slate-900" onclick="location.reload()">LUXE<span class="text-orange-600">.</span></div>
+    
+    <div class="hidden md:flex items-center gap-8 text-sm font-bold text-slate-600">
+        <a href="#home" class="hover:text-orange-600 transition-colors">Home</a>
+        
+        <div class="relative group nav-item">
+            <a href="#products" class="hover:text-orange-600 transition-colors flex items-center gap-1 py-4">Products <i class="fa-solid fa-chevron-down text-[10px]"></i></a>
+            
+            <div class="dropdown-menu absolute top-full left-0 bg-white border border-slate-100 shadow-xl rounded-2xl w-56 py-2 transition-all duration-300">
+                
+                <div class="relative sub-nav-item">
+                    <a href="#" class="block px-6 py-3 hover:bg-slate-50 hover:text-orange-600 flex justify-between items-center">Men <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    <div class="sub-dropdown-menu absolute top-0 bg-white border border-slate-100 shadow-xl rounded-2xl w-48 py-2 ml-1">
+                        <a href="#" onclick="filterByCategory('Men Shirts')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Shirts</a>
+                        <a href="#" onclick="filterByCategory('Men Pants')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Pants</a>
+                        <a href="#" onclick="filterByCategory('Men Trousers')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Trousers</a>
+                        <a href="#" onclick="filterByCategory('Men Shoes')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Shoes</a>
+                    </div>
+                </div>
+
+                <div class="relative sub-nav-item">
+                    <a href="#" class="block px-6 py-3 hover:bg-slate-50 hover:text-orange-600 flex justify-between items-center">Women <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    <div class="sub-dropdown-menu absolute top-0 bg-white border border-slate-100 shadow-xl rounded-2xl w-48 py-2 ml-1">
+                        <a href="#" onclick="filterByCategory('Women Shirts')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Shirts</a>
+                        <a href="#" onclick="filterByCategory('Women Pants')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Pants</a>
+                        <a href="#" onclick="filterByCategory('Women Trousers')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Trousers</a>
+                        <a href="#" onclick="filterByCategory('Women Shoes')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Shoes</a>
+                    </div>
+                </div>
+
+                <div class="relative sub-nav-item">
+                    <a href="#" class="block px-6 py-3 hover:bg-slate-50 hover:text-orange-600 flex justify-between items-center">Accessories <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    <div class="sub-dropdown-menu absolute top-0 bg-white border border-slate-100 shadow-xl rounded-2xl w-48 py-2 ml-1">
+                        <a href="#" onclick="filterByCategory('Watches')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Watches</a>
+                        <a href="#" onclick="filterByCategory('Belts')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Belts</a>
+                        <a href="#" onclick="filterByCategory('Glasses')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Glasses</a>
+                    </div>
+                </div>
+
+                <div class="relative sub-nav-item">
+                    <a href="#" class="block px-6 py-3 hover:bg-slate-50 hover:text-orange-600 flex justify-between items-center">Tech & Mobile <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    <div class="sub-dropdown-menu absolute top-0 bg-white border border-slate-100 shadow-xl rounded-2xl w-48 py-2 ml-1">
+                        <a href="#" onclick="filterByCategory('Handfrees')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Handfrees</a>
+                        <a href="#" onclick="filterByCategory('Ear Buds')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Ear Buds</a>
+                        <a href="#" onclick="filterByCategory('Gorilla Glass')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Gorilla Glass</a>
+                        <a href="#" onclick="filterByCategory('Mobile Covers')" class="block px-6 py-2 hover:bg-slate-50 hover:text-orange-600">Mobile Covers</a>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 my-1"></div>
+                <a href="#" onclick="filterByCategory('All')" class="block px-6 py-3 hover:bg-slate-50 text-slate-400 hover:text-slate-900">View All Products</a>
+            </div>
+        </div>
+
+        <a href="#contact" class="hover:text-orange-600 transition-colors">Contact</a>
+        <a href="#my-orders-section" onclick="showMyOrders()" class="hover:text-orange-600 transition-colors user-only hidden">My Orders</a>
+    </div>
+
+    <div class="flex items-center gap-4 md:gap-6">
+        <button id="nav-login-btn" onclick="openAuthModal()" class="text-xs font-black uppercase text-white bg-slate-900 px-5 py-2.5 rounded-full hover:bg-orange-600 transition-colors shadow-md">Login / Signup</button>
+        <div id="nav-user-profile" class="hidden flex items-center gap-3">
+            <span id="nav-user-name" class="text-sm font-bold text-slate-700 hidden md:block"></span>
+            <button onclick="logoutUser()" class="text-xs font-bold text-red-500 hover:text-red-700"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+
+        <button onclick="openModal('admin-lock')" class="text-xs font-black uppercase text-slate-400 hover:text-slate-900 bg-slate-100 px-4 py-2.5 rounded-full transition-colors"><i class="fa-solid fa-lock mr-1"></i> Admin</button>
+        
+        <button onclick="openCart()" id="cart-target" class="relative bg-slate-900 text-white w-12 h-12 rounded-full flex items-center justify-center transition-transform active:scale-90 hover:bg-orange-600 shadow-md">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-orange-500 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black border-2 border-white shadow-sm">0</span>
+        </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="hidden fixed inset-0 top-20 bg-white z-40 p-6 overflow-y-auto">
+      <div class="flex flex-col gap-4 text-center font-bold text-slate-600 text-lg">
+          <a href="#home" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a>
+          <a href="#products" onclick="filterByCategory('All'); document.getElementById('mobile-menu').classList.add('hidden')">All Products</a>
+          <a href="#products" onclick="filterByCategory('Men Shirts'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-sm text-slate-400">- Men's Wear</a>
+          <a href="#products" onclick="filterByCategory('Women Shirts'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-sm text-slate-400">- Women's Wear</a>
+          <a href="#products" onclick="filterByCategory('Watches'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-sm text-slate-400">- Accessories</a>
+          <a href="#products" onclick="filterByCategory('Ear Buds'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-sm text-slate-400">- Tech & Gadgets</a>
+          <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact</a>
+      </div>
+  </div>
+
+  <div id="main-site-content">
+      <section id="home" class="pt-36 pb-20 px-6 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 reveal">
+          <div class="flex-1 text-center md:text-left">
+              <span class="bg-orange-100 text-orange-600 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-6 inline-block">New Collection 2026</span>
+              <h1 class="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-6 tracking-tighter">Elevate Your <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500">Everyday Style.</span></h1>
+              <p class="text-slate-500 text-lg mb-10 max-w-lg mx-auto md:mx-0 font-medium">Discover premium quality fashion and top-tier accessories curated for the modern elite.</p>
+              
+              <div class="relative max-w-lg mx-auto md:mx-0 shadow-2xl rounded-full bg-white p-2 flex items-center border border-slate-100 group focus-within:border-orange-500 focus-within:ring-4 ring-orange-500/10 transition-all">
+                  <i class="fa-solid fa-magnifying-glass absolute left-6 text-slate-400 group-focus-within:text-orange-500"></i>
+                  <input type="text" id="hero-search" oninput="filterItemsFromHero()" placeholder="Search watches, shirts, ear buds..." class="w-full bg-transparent border-none py-3 pl-12 pr-4 outline-none font-bold text-slate-700 placeholder-slate-400">
+                  <button onclick="document.getElementById('products').scrollIntoView()" class="bg-slate-900 text-white px-8 py-3 rounded-full font-black text-xs hover:bg-orange-600 transition-colors shadow-md">SEARCH</button>
+              </div>
+          </div>
+          <div class="flex-1 w-full relative">
+              <div class="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-purple-500/20 rounded-[3rem] blur-3xl transform rotate-6"></div>
+              <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000" alt="Fashion" class="relative z-10 w-full h-[500px] object-cover rounded-[3rem] shadow-2xl border-4 border-white">
+          </div>
+      </section>
+
+      <section id="products" class="bg-slate-100 py-20 rounded-t-[4rem]">
+          <div class="max-w-7xl mx-auto px-6 md:px-8">
+              <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+                  <div>
+                      <h2 class="text-4xl font-black text-slate-900 tracking-tighter mb-2">Our Collection</h2>
+                      <p class="text-slate-500 font-medium" id="current-category-label">Showing All Products</p>
+                  </div>
+                  <div class="flex items-center gap-4 mt-6 md:mt-0">
+                      <select id="sort-logic" onchange="applyFilters()" class="bg-white border border-slate-200 shadow-sm rounded-xl px-5 py-3 text-sm font-bold outline-none focus:ring-2 ring-orange-500 cursor-pointer">
+                          <option value="default">Sort by: Recommended</option>
+                          <option value="low">Price: Low to High</option>
+                          <option value="high">Price: High to Low</option>
+                      </select>
+                      <button onclick="openModal('spin-modal')" class="bg-gradient-to-r from-orange-500 to-rose-500 text-white px-6 py-3 rounded-xl font-black text-sm shadow-lg hover:shadow-orange-500/30 hover:scale-105 transition-all active:scale-95 flex items-center gap-2">
+                          <i class="fa-solid fa-gift"></i> VIP WHEEL
+                      </button>
+                  </div>
+              </div>
+
+              <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  </div>
+          </div>
+      </section>
+
+      <section id="contact" class="py-24 bg-white">
+          <div class="max-w-4xl mx-auto px-6 reveal text-center">
+              <span class="text-orange-600 font-bold text-xs uppercase tracking-widest mb-2 block">Reach Out</span>
+              <h2 class="text-5xl font-black text-slate-900 mb-6 tracking-tighter">Let's Connect</h2>
+              <p class="text-slate-500 mb-12 text-lg">Have a question about your order or our collections? Drop us a message.</p>
+              
+              <div class="bg-slate-50 p-8 md:p-12 rounded-[3rem] border border-slate-100 text-left relative overflow-hidden shadow-lg">
+                  <form class="space-y-6 relative z-10" onsubmit="event.preventDefault(); alert('Message sent successfully!'); this.reset();">
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                              <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Your Name</label>
+                              <input type="text" required placeholder="John Doe" class="w-full px-5 py-4 rounded-2xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 ring-orange-500/10 transition-all font-medium text-slate-800">
+                          </div>
+                          <div>
+                              <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Email Address</label>
+                              <input type="email" required placeholder="john@example.com" class="w-full px-5 py-4 rounded-2xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 ring-orange-500/10 transition-all font-medium text-slate-800">
+                          </div>
+                      </div>
+                      <div>
+                          <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Message</label>
+                          <textarea required rows="4" placeholder="How can we help?" class="w-full px-5 py-4 rounded-2xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 ring-orange-500/10 transition-all resize-none font-medium text-slate-800"></textarea>
+                      </div>
+                      <button type="submit" class="w-full py-5 bg-slate-900 text-white font-black rounded-2xl hover:bg-orange-600 transform transition-all active:scale-[0.98] shadow-xl text-lg">
+                          Send Message <i class="fa-solid fa-paper-plane ml-2"></i>
+                      </button>
+                  </form>
+              </div>
+          </div>
+      </section>
+
+      <section id="my-orders-section" class="py-24 bg-slate-100 hidden">
+          <div class="max-w-6xl mx-auto px-6">
+              <div class="text-center mb-16">
+                  <h2 class="text-4xl font-black text-slate-900 tracking-tighter mb-4"><i class="fa-solid fa-box-open text-orange-500 mr-2"></i> My Orders</h2>
+                  <p class="text-slate-500 text-lg">Track and view your previous purchases.</p>
+              </div>
+              <div id="customer-orders-list" class="space-y-6">
+                  </div>
+          </div>
+      </section>
+  </div> 
+
+  <div id="spin-modal" class="modal-overlay">
+    <div class="bg-white p-8 md:p-12 rounded-[3.5rem] w-full max-w-lg text-center relative shadow-2xl border-4 border-slate-50">
+        <button onclick="closeModal('spin-modal')" class="absolute top-6 right-6 w-10 h-10 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-900 hover:text-white transition-all"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <span class="text-orange-500 font-bold text-xs uppercase tracking-widest mb-2 block">Exclusive</span>
+        <h2 class="text-3xl font-black mb-10 uppercase tracking-tighter text-slate-900">VIP Rewards</h2>
+        <div class="flex justify-center mb-12">
+            <div id="wheel-wrapper">
+                <div class="wheel-pointer"><i class="fa-solid fa-caret-down drop-shadow-md"></i></div>
+                <div class="center-hub border-4 border-slate-900"></div>
+                <canvas id="wheel-canvas" width="400" height="400"></canvas>
+            </div>
+        </div>
+        <button id="spin-btn" onclick="spinWheel()" class="w-full bg-slate-900 text-white py-5 rounded-[2rem] font-black text-lg hover:bg-orange-600 transition-all shadow-xl hover:shadow-orange-500/30 active:scale-95">SPIN THE WHEEL</button>
+        <p id="spin-res" class="mt-6 text-xs font-black uppercase text-slate-400 tracking-widest bg-slate-50 py-2 rounded-lg"></p>
+    </div>
+  </div>
+
+  <div id="cart-modal" class="modal-overlay items-end md:items-center">
+    <div class="bg-white p-6 md:p-10 rounded-t-[2.5rem] md:rounded-[3.5rem] w-full max-w-6xl shadow-2xl flex flex-col lg:flex-row gap-8 lg:gap-12 relative max-h-[90vh] overflow-y-auto slide-up">
+        <div class="flex-1">
+            <div class="flex justify-between items-center mb-8 border-b border-slate-100 pb-6">
+                <h2 class="text-3xl font-black tracking-tighter text-slate-900"><i class="fa-solid fa-bag-shopping text-orange-500 mr-2"></i> Shopping Bag</h2>
+                <button onclick="closeModal('cart-modal')" class="text-xs font-bold bg-slate-100 text-slate-500 px-4 py-2 rounded-full hover:bg-slate-200 hover:text-slate-900 transition-all">
+                    Close <i class="fa-solid fa-xmark ml-1"></i>
+                </button>
+            </div>
+            <div id="cart-items" class="space-y-4 max-h-[300px] lg:max-h-[450px] overflow-y-auto pr-4 custom-scrollbar"></div>
+        </div>
+        
+        <div class="w-full lg:w-[450px] bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 shadow-inner h-fit">
+            <h3 class="font-black text-xs text-slate-400 mb-6 uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-receipt"></i> Order Summary</h3>
+            <div class="space-y-4 font-bold text-sm text-slate-600 mb-8">
+                <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-100"><span>Subtotal</span><span id="sub-total" class="text-slate-900">0</span></div>
+                <div class="flex justify-between items-center bg-orange-50 p-4 rounded-xl border border-orange-100 text-orange-600"><span>Discount Applied</span><span id="disc-val" class="font-black bg-white px-2 py-1 rounded-md shadow-sm">0%</span></div>
+                <div class="flex justify-between items-center text-3xl font-black pt-4 border-t border-slate-200 text-slate-900"><span>Total</span><span id="total-val">0</span></div>
+            </div>
+            
+            <h3 class="font-black text-xs text-slate-400 mb-4 uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-truck-fast"></i> Shipping Details</h3>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <input type="text" id="cust-name" placeholder="Full Name" required class="w-full p-4 rounded-2xl bg-white border border-slate-200 outline-none font-bold text-sm focus:border-orange-500 transition-all text-slate-800 shadow-sm">
+                    </div>
+                    <div>
+                        <input type="tel" id="cust-phone" placeholder="Phone Number" required class="w-full p-4 rounded-2xl bg-white border border-slate-200 outline-none font-bold text-sm focus:border-orange-500 transition-all text-slate-800 shadow-sm">
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <select id="cust-city" required class="w-full p-4 rounded-2xl bg-white border border-slate-200 outline-none font-bold text-sm focus:border-orange-500 transition-all text-slate-800 shadow-sm appearance-none cursor-pointer">
+                        <option value="" disabled selected>Select Your City</option>
+                        <option value="Karachi">Karachi</option>
+                        <option value="Lahore">Lahore</option>
+                        <option value="Islamabad">Islamabad</option>
+                        <option value="Rawalpindi">Rawalpindi</option>
+                        <option value="Bahawalpur">Bahawalpur</option>
+                        <option value="Multan">Multan</option>
+                        <option value="Faisalabad">Faisalabad</option>
+                        <option value="Peshawar">Peshawar</option>
+                        <option value="Quetta">Quetta</option>
+                        <option value="Other">Other (Write below in address)</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                </div>
+
+                <div>
+                    <textarea id="cust-address" rows="2" placeholder="Complete Delivery Address" required class="w-full p-4 rounded-2xl bg-white border border-slate-200 outline-none font-bold text-sm focus:border-orange-500 transition-all resize-none text-slate-800 shadow-sm"></textarea>
+                </div>
+            </div>
+            <button onclick="submitOrder()" class="w-full bg-slate-900 text-white py-5 rounded-[2rem] mt-6 font-black shadow-xl shadow-slate-900/20 hover:bg-orange-600 hover:shadow-orange-500/30 transition-all active:scale-95 text-lg">CONFIRM ORDER <i class="fa-solid fa-check ml-2"></i></button>
+        </div>
+    </div>
+  </div>
+
+  <div id="authModal" class="modal-overlay z-[2000]">
+      <button onclick="closeAuthModal()" class="absolute top-6 right-6 w-12 h-12 bg-white/10 backdrop-blur text-white rounded-full hover:bg-white hover:text-slate-900 transition-all z-50 shadow-lg border border-white/20"><i class="fa-solid fa-xmark text-xl"></i></button>
+      
+      <div id="auth-container" class="auth-box-container">
+          <div class="row">
+              <div class="col align-items-center flex-col sign-up">
+                  <div class="form-wrapper align-items-center">
+                      <form id="signup-form" class="form sign-up">
+                          <h2 style="font-weight: 800; font-size: 2rem; margin-bottom: 1rem; color: #1e293b;">Sign Up</h2>
+                          <div class="input-group">
+                              <i class='bx bxs-user'></i>
+                              <input type="text" id="reg-name" placeholder="Full Name" required>
+                          </div>
+                          <div class="input-group">
+                              <i class='bx bx-mail-send'></i>
+                              <input type="email" id="reg-email" placeholder="Email Address" required>
+                          </div>
+                          <div class="input-group">
+                              <i class='bx bxs-lock-alt'></i>
+                              <input type="password" id="reg-pass" placeholder="Password" required>
+                          </div>
+                          <button type="submit">Create Account</button>
+                          <p>
+                              <span>Already have an account?</span>
+                              <b onclick="toggleAuth()" class="pointer text-orange-600 ml-1">Sign in here</b>
+                          </p>
+                      </form>
+                  </div>
+              </div>
+              
+              <div class="col align-items-center flex-col sign-in">
+                  <div class="form-wrapper align-items-center">
+                      <form id="signin-form" class="form sign-in">
+                          <h2 style="font-weight: 800; font-size: 2rem; margin-bottom: 1rem; color: #1e293b;">Sign In</h2>
+                          <div class="input-group">
+                              <i class='bx bx-mail-send'></i>
+                              <input type="email" id="log-email" placeholder="Email Address" required>
+                          </div>
+                          <div class="input-group">
+                              <i class='bx bxs-lock-alt'></i>
+                              <input type="password" id="log-pass" placeholder="Password" required>
+                          </div>
+                          <button type="submit">Login</button>
+                          <p class="pointer text-slate-500 hover:text-slate-900 transition-colors mt-4"><b>Forgot password?</b></p>
+                          <p>
+                              <span>Don't have an account?</span>
+                              <b onclick="toggleAuth()" class="pointer text-orange-600 ml-1">Sign up here</b>
+                          </p>
+                      </form>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="row content-row">
+              <div class="col align-items-center flex-col">
+                  <div class="text sign-in text-white text-center px-10">
+                      <h2 class="text-5xl font-black mb-4">Welcome Back</h2>
+                      <p class="font-medium text-white/80">Login to your LUXE account to access your orders, saved items, and exclusive VIP offers.</p>
+                  </div>
+              </div>
+              <div class="col align-items-center flex-col">
+                  <div class="text sign-up text-white text-center px-10">
+                      <h2 class="text-5xl font-black mb-4">Join LUXE</h2>
+                      <p class="font-medium text-white/80">Create an account to unlock premium features and start your luxury shopping journey.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div id="admin-lock" class="modal-overlay">
+      <div class="bg-white p-10 rounded-[3rem] w-full max-w-sm text-center shadow-2xl relative overflow-hidden">
+          <div class="w-20 h-20 bg-slate-50 text-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-100"><i class="fa-solid fa-user-shield text-3xl"></i></div>
+          <h2 class="text-2xl font-black mb-2 tracking-tighter">Admin Portal</h2>
+          <p class="text-xs font-bold text-slate-400 mb-8 uppercase tracking-widest">Authorized Personnel Only</p>
+          <div class="relative mb-8">
+              <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="password" id="staff-key" placeholder="Enter PIN (1234)" class="w-full py-4 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-2xl text-center outline-none font-black tracking-[0.5em] focus:border-orange-500 focus:bg-white transition-all text-slate-800">
+          </div>
+          <button onclick="loginAdmin()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black hover:bg-orange-600 transition-colors shadow-lg shadow-slate-900/20">AUTHORIZE</button>
+          <button onclick="closeModal('admin-lock')" class="w-full mt-4 py-3 bg-white border border-slate-200 text-xs font-bold text-slate-500 rounded-2xl hover:bg-slate-50 transition-colors">Cancel</button>
+      </div>
+  </div>
+
+  <section id="admin-os" class="hidden min-h-screen bg-slate-50 pb-20 z-50 relative">
+    <div class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-black tracking-tighter text-slate-900">LUXE<span class="text-orange-600">.</span> <span class="text-sm font-medium text-slate-400 border-l border-slate-200 pl-3 ml-2">Admin OS</span></div>
+            <button onclick="logoutAdmin()" class="bg-red-50 text-red-600 border border-red-100 px-6 py-2 rounded-full font-bold text-xs hover:bg-red-600 hover:text-white transition-colors flex items-center gap-2"><i class="fa-solid fa-power-off"></i> EXIT OS</button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 pt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-1 bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm h-fit">
+            <h3 class="font-black text-xl mb-6 text-slate-900 border-b border-slate-100 pb-4"><i class="fa-solid fa-plus-circle text-orange-500 mr-2"></i> Add New Product</h3>
+            <form id="add-product-form" onsubmit="addNewProduct(event)" class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Product Name</label>
+                    <input type="text" id="new-p-name" required placeholder="e.g. Classic Oxford Shirt" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-sm outline-none focus:border-orange-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Price (Rs)</label>
+                        <input type="number" id="new-p-price" required placeholder="4500" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-sm outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Category</label>
+                        <select id="new-p-cat" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-sm outline-none focus:border-orange-500 cursor-pointer">
+                            <option value="Men Shirts">Men Shirts</option>
+                            <option value="Men Pants">Men Pants</option>
+                            <option value="Men Trousers">Men Trousers</option>
+                            <option value="Men Shoes">Men Shoes</option>
+                            <option value="Women Shirts">Women Shirts</option>
+                            <option value="Women Pants">Women Pants</option>
+                            <option value="Women Trousers">Women Trousers</option>
+                            <option value="Women Shoes">Women Shoes</option>
+                            <option value="Watches">Watches</option>
+                            <option value="Belts">Belts</option>
+                            <option value="Glasses">Glasses</option>
+                            <option value="Handfrees">Handfrees</option>
+                            <option value="Ear Buds">Ear Buds</option>
+                            <option value="Gorilla Glass">Gorilla Glass</option>
+                            <option value="Mobile Covers">Mobile Covers</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Image URL</label>
+                    <input type="url" id="new-p-img" required placeholder="https://..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-medium text-xs outline-none focus:border-orange-500">
+                </div>
+                <button type="submit" class="w-full py-4 bg-slate-900 text-white font-black rounded-xl hover:bg-orange-600 transition-colors mt-4 shadow-lg shadow-slate-900/20"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Publish Product</button>
+            </form>
+        </div>
+
+        <div class="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm flex flex-col min-h-[600px]">
+            <div class="flex gap-4 mb-6 border-b border-slate-100 pb-4">
+                <button id="tab-orders" onclick="switchAdminTab('orders')" class="font-black text-xl text-blue-600 border-b-2 border-blue-600 pb-2"><i class="fa-solid fa-boxes-packing mr-2"></i> Orders</button>
+                <button id="tab-products" onclick="switchAdminTab('products')" class="font-black text-xl text-slate-400 hover:text-slate-900 pb-2"><i class="fa-solid fa-tags mr-2"></i> Products Database <span id="stat-posts" class="ml-2 bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">0</span></button>
+            </div>
+
+            <div id="view-orders" class="flex-1 flex flex-col">
+                <div class="flex justify-end mb-4">
+                    <input type="text" id="search-adm-n" placeholder="Search customer..." class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-lg text-sm font-bold outline-none focus:border-blue-500 w-48">
+                    <button onclick="lookupOrders()" class="bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-black hover:bg-blue-600 transition-colors ml-2"><i class="fa-solid fa-search"></i></button>
+                </div>
+                <div id="order-log" class="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar"></div>
+            </div>
+
+            <div id="view-products" class="flex-1 flex flex-col hidden">
+                <div id="admin-product-log" class="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar"></div>
+            </div>
+        </div>
+
+    </div>
+  </section>
+
+  <div id="receipt-area">
+      <div style="text-align:center">
+          <h2 style="font-weight:900; letter-spacing:-1px; font-size:24px; margin-bottom:5px;">LUXE.</h2>
+          <p style="font-size:10px; color:#666;">OFFICIAL DIGITAL RECEIPT</p>
+      </div>
+      <hr style="border:1px dashed #ccc; margin:20px 0">
+      <div id="receipt-body" style="font-family:monospace; font-size:13px; line-height:1.6; color:#333;"></div>
+      <hr style="border:1px dashed #ccc; margin:20px 0">
+      <h3 id="receipt-sum" style="text-align:right; font-size:16px; color:#000;"></h3>
+      <div style="text-align:center; margin-top:30px;">
+          <p style="font-size:10px; color:#999;">Thank you for shopping at Luxe.</p>
+      </div>
+  </div>
+
+  <footer class="bg-slate-950 text-white pt-24 pb-12 relative z-10">
+      <div class="max-w-7xl mx-auto px-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+              <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                  <div class="text-3xl font-black tracking-tighter mb-6">LUXE<span class="text-orange-600">.</span></div>
+                  <p class="text-slate-400 leading-relaxed mb-6">Your ultimate hub for premium fashion, tech, and lifestyle accessories. Shop the elite.</p>
+              </div>
+              <div>
+                  <h4 class="text-lg font-bold mb-6 text-orange-500">Navigation</h4>
+                  <ul class="space-y-4 text-slate-400">
+                      <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                      <li><a href="#products" onclick="filterByCategory('All')" class="hover:text-white transition-colors">All Products</a></li>
+                      <li><a href="#contact" class="hover:text-white transition-colors">Contact Support</a></li>
+                  </ul>
+              </div>
+          </div>
+          <div class="pt-8 border-t border-slate-900 flex justify-between items-center gap-4 text-sm text-slate-500">
+              <p>© 2026 LUXE Premium Store. All rights reserved.</p>
+          </div>
+      </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+  
+  <script src="app.js"></script>
+</body>
+</html>
