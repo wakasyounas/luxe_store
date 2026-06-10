@@ -1,14 +1,11 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// ==========================================
+// 1. FIREBASE CONFIGURATION & INITIALIZATION
+// ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyBMz0VVCHCOkPo8yPKWjfgVsFgI22G8srA",
   authDomain: "luxestore-a3738.firebaseapp.com",
+  databaseURL: "https://luxestore-a3738-default-rtdb.firebaseio.com",
   projectId: "luxestore-a3738",
   storageBucket: "luxestore-a3738.firebasestorage.app",
   messagingSenderId: "209528428677",
@@ -16,9 +13,20 @@ const firebaseConfig = {
   measurementId: "G-7TJYB2CXM3"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let db = null;
+let auth = null;
+let useFirebase = false;
+
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    auth = firebase.auth();
+    useFirebase = true;
+    console.log("🔥 Firebase Connected Successfully!");
+} catch(e) {
+    console.log("⚠️ Firebase Error: ", e.message);
+}
+
 // ==========================================
 // 2. STATE & DATA INITIALIZATION
 // ==========================================
@@ -605,6 +613,7 @@ function addNewProduct(e) {
     }
 }
 
+// ADMIN: PRODUCT MANAGEMENT (UPDATED WITH BULK DELETE & EDIT)
 function renderAdminProducts() {
     const log = document.getElementById('admin-product-log');
     document.getElementById('stat-posts').innerText = allProducts.length;
@@ -614,19 +623,95 @@ function renderAdminProducts() {
         return;
     }
 
-    log.innerHTML = allProducts.map(p => `
-        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-slate-300 transition-all">
-            <div class="flex items-center gap-4">
-                <img src="${p.img}" class="w-12 h-12 rounded-lg object-cover">
+    // Top action bar for Select All and Bulk Delete
+    let html = `
+    <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-4 shadow-sm">
+        <div class="flex items-center gap-3">
+            <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" class="w-5 h-5 accent-orange-600 cursor-pointer rounded">
+            <label for="selectAllCheckbox" class="font-bold text-sm text-slate-700 cursor-pointer">Select All</label>
+        </div>
+        <button onclick="bulkDeleteProducts()" class="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-xs font-black hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-solid fa-trash-can mr-1"></i> Delete Selected</button>
+    </div>
+    `;
+
+    html += allProducts.map(p => `
+        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-slate-300 transition-all gap-4">
+            <div class="flex items-center gap-4 flex-1">
+                <input type="checkbox" value="${p.dbKey}" class="product-checkbox w-5 h-5 accent-orange-600 cursor-pointer rounded">
+                <img src="${p.img}" class="w-12 h-12 rounded-lg object-cover border border-slate-100">
                 <div>
                     <span class="text-[9px] font-black text-orange-600 uppercase tracking-widest">${p.cat}</span>
                     <h4 class="text-slate-900 font-bold text-sm line-clamp-1">${p.name}</h4>
                     <p class="text-xs font-medium text-slate-500">Rs. ${p.price}</p>
                 </div>
             </div>
-            <button onclick="deleteProduct('${p.id}', '${p.dbKey}')" class="w-10 h-10 bg-red-50 rounded-xl text-red-500 hover:bg-red-500 hover:text-white border border-red-100 shadow-sm transition-all shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+            <div class="flex gap-2 shrink-0">
+                <button onclick="openEditModal('${p.dbKey}')" class="w-10 h-10 bg-blue-50 rounded-xl text-blue-500 hover:bg-blue-500 hover:text-white border border-blue-100 shadow-sm transition-all"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteProduct('${p.id}', '${p.dbKey}')" class="w-10 h-10 bg-red-50 rounded-xl text-red-500 hover:bg-red-500 hover:text-white border border-red-100 shadow-sm transition-all"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
         </div>
     `).join('');
+    
+    log.innerHTML = html;
+}
+
+// Bulk Delete Logic
+function toggleSelectAll(checkbox) {
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    checkboxes.forEach(cb => cb.checked = checkbox.checked);
+}
+
+function bulkDeleteProducts() {
+    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+    if(checkedBoxes.length === 0) return alert("Please select at least one product to delete.");
+    
+    if(confirm(`Are you sure you want to permanently delete ${checkedBoxes.length} selected products?`)) {
+        if(useFirebase) {
+            let updates = {};
+            checkedBoxes.forEach(cb => {
+                if(cb.value !== 'undefined') updates[cb.value] = null; // null deletes the record in Firebase
+            });
+            db.ref('products').update(updates).then(() => {
+                alert("Selected products deleted successfully.");
+            });
+        }
+    }
+}
+
+// Edit Product Logic
+function openEditModal(dbKey) {
+    const product = allProducts.find(p => p.dbKey === dbKey);
+    if(!product) return;
+    
+    // Fill the form with existing data
+    document.getElementById('edit-p-dbkey').value = product.dbKey;
+    document.getElementById('edit-p-name').value = product.name;
+    document.getElementById('edit-p-price').value = product.price;
+    document.getElementById('edit-p-cat').value = product.cat;
+    document.getElementById('edit-p-img').value = product.img;
+    
+    openModal('edit-product-modal');
+}
+
+function saveEditedProduct(e) {
+    e.preventDefault();
+    const dbKey = document.getElementById('edit-p-dbkey').value;
+    const name = document.getElementById('edit-p-name').value;
+    const price = parseInt(document.getElementById('edit-p-price').value);
+    const cat = document.getElementById('edit-p-cat').value;
+    const img = document.getElementById('edit-p-img').value;
+    
+    if(useFirebase && dbKey) {
+        db.ref('products/' + dbKey).update({
+            name: name,
+            price: price,
+            cat: cat,
+            img: img
+        }).then(() => {
+            alert("Product updated successfully!");
+            closeModal('edit-product-modal');
+        });
+    }
 }
 
 function deleteProduct(id, dbKey) {
