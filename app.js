@@ -1,32 +1,24 @@
-// ==========================================
-// 1. FIREBASE CONFIGURATION & INITIALIZATION
-// ==========================================
-// User provided Config
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCXCO9zBeFcIUSqr4560dhvhsB6ASw7mH4",
-  authDomain: "luxestore-6e971.firebaseapp.com",
-  databaseURL: "https://luxestore-6e971-default-rtdb.firebaseio.com",
-  projectId: "luxestore-6e971",
-  storageBucket: "luxestore-6e971.firebasestorage.app",
-  messagingSenderId: "855513072694",
-  appId: "1:855513072694:web:b8526f6b10106c55b78497",
-  measurementId: "G-38K8JKMQJ4"
+  apiKey: "AIzaSyBMz0VVCHCOkPo8yPKWjfgVsFgI22G8srA",
+  authDomain: "luxestore-a3738.firebaseapp.com",
+  projectId: "luxestore-a3738",
+  storageBucket: "luxestore-a3738.firebasestorage.app",
+  messagingSenderId: "209528428677",
+  appId: "1:209528428677:web:45180eaaebc8ff4d5ab1ec",
+  measurementId: "G-7TJYB2CXM3"
 };
 
-let db = null;
-let auth = null;
-let useFirebase = false;
-
-try {
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.database();
-    auth = firebase.auth();
-    useFirebase = true;
-    console.log("🔥 Firebase Connected Successfully!");
-} catch(e) {
-    console.log("⚠️ Firebase Error: ", e.message);
-}
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // ==========================================
 // 2. STATE & DATA INITIALIZATION
 // ==========================================
