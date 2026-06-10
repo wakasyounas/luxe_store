@@ -439,6 +439,51 @@
     </div>
   </section>
 
+  <div id="edit-product-modal" class="modal-overlay z-[3000]">
+      <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-lg relative shadow-2xl">
+          <button onclick="closeModal('edit-product-modal')" class="absolute top-6 right-6 w-10 h-10 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-900 hover:text-white transition-all"><i class="fa-solid fa-xmark"></i></button>
+          <h3 class="font-black text-xl mb-6 text-slate-900 border-b border-slate-100 pb-4"><i class="fa-solid fa-pen-to-square text-orange-500 mr-2"></i> Edit Product</h3>
+          <form id="edit-product-form" onsubmit="saveEditedProduct(event)" class="space-y-4">
+              <input type="hidden" id="edit-p-dbkey">
+              <div>
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Product Name</label>
+                  <input type="text" id="edit-p-name" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-sm outline-none focus:border-orange-500">
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                  <div>
+                      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Price (Rs)</label>
+                      <input type="number" id="edit-p-price" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-sm outline-none focus:border-orange-500">
+                  </div>
+                  <div>
+                      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Category</label>
+                      <select id="edit-p-cat" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-sm outline-none focus:border-orange-500 cursor-pointer">
+                          <option value="Men Shirts">Men Shirts</option>
+                          <option value="Men Pants">Men Pants</option>
+                          <option value="Men Trousers">Men Trousers</option>
+                          <option value="Men Shoes">Men Shoes</option>
+                          <option value="Women Shirts">Women Shirts</option>
+                          <option value="Women Pants">Women Pants</option>
+                          <option value="Women Trousers">Women Trousers</option>
+                          <option value="Women Shoes">Women Shoes</option>
+                          <option value="Watches">Watches</option>
+                          <option value="Belts">Belts</option>
+                          <option value="Glasses">Glasses</option>
+                          <option value="Handfrees">Handfrees</option>
+                          <option value="Ear Buds">Ear Buds</option>
+                          <option value="Gorilla Glass">Gorilla Glass</option>
+                          <option value="Mobile Covers">Mobile Covers</option>
+                      </select>
+                  </div>
+              </div>
+              <div>
+                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Image URL</label>
+                  <input type="url" id="edit-p-img" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 font-medium text-xs outline-none focus:border-orange-500">
+              </div>
+              <button type="submit" class="w-full py-4 bg-slate-900 text-white font-black rounded-xl hover:bg-orange-600 transition-colors mt-4 shadow-lg shadow-slate-900/20"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Update Product</button>
+          </form>
+      </div>
+  </div>
+
   <div id="receipt-area">
       <div style="text-align:center">
           <h2 style="font-weight:900; letter-spacing:-1px; font-size:24px; margin-bottom:5px;">LUXE.</h2>
